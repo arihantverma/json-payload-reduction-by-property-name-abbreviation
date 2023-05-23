@@ -5,15 +5,10 @@ const abbrKeyedTestData = getAbbrObject(fullKeyedTestData);
 
 async function getGZippedJSONSize(jsonObj) {
   const json = JSON.stringify(jsonObj);
-  const blob = new Blob([json], { type: "application/json" });
+  const blob = new Blob([json]);
   const compressionStream = new CompressionStream("gzip");
   const compressedStream = blob.stream().pipeThrough(compressionStream);
-  const compressedResponse = await new Response(compressedStream, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }).blob();
-
+  const compressedResponse = await new Response(compressedStream).blob();
   return bytes(compressedResponse.size);
 }
 
